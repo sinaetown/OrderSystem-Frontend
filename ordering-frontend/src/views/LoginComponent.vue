@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="page-header">
+        <div class="page-header text-center" style="margin-top: 20px">
             <h1>로그인</h1>
         </div>
         <!-- submit은 기본적으로 form 제출 시, 브라우저가 페이지를 새로고침하므로 해당 동작을 막기 위해 prevent를 사용한다 -->
@@ -47,8 +47,11 @@ export default {
                     const decoded = jwtDecode(token);
                     localStorage.setItem("token", token);
                     localStorage.setItem("role", decoded.role);
+                    // created 함수는 reload될 때 1번만 실행되는 hook 함수
+                    // 그런데, router.push를 통한 화면전환은 reload를 실행시키지 않기에, created 함수는 호출이 되지 않는다
                     alert("Welcome, " + decoded.sub + "!");
-                    this.$router.push("/");
+                    // this.$router.push("/");
+                    window.location.href="/";
                 }
                 else {
                     console.log("200 ok but not a valid token");
