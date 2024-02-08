@@ -1,5 +1,5 @@
 <template>
-    <OrderListComponent :isAdmin="true" :apiUrl="`http://localhost:8080/member/${id}/orders`"/>
+    <OrderListComponent :isAdmin="true" :apiUrl="`/member/${id}/orders`"/>
 </template>
 
 <script>
@@ -8,6 +8,6 @@ export default {
     props:['id'], 
     components: {
         OrderListComponent
-    }
+    },
 }
 </script>

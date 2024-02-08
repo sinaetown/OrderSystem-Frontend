@@ -67,7 +67,7 @@ export default {
                     name: this.name, email: this.email, password: this.password,
                     city: this.city, street: this.street, zipcode: this.zipcode
                 };
-                await axios.post("http://localhost:8080/member/create", registerData);
+                await axios.post(`${process.env.VUE_APP_API_BASE_URL}/member/create`, registerData);
                 // window.location.href = "/login";
                 this.$router.push({ name: "Login" }); //URL도 가능하지만 name으로도 가능!
             }

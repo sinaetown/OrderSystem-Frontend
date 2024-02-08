@@ -50,7 +50,7 @@ export default {
         try {
             const token = localStorage.getItem('token');
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
-            const response = await axios.get(this.apiUrl, { headers });
+            const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}${this.apiUrl}`, { headers });
             this.orderList = response.data;
         }
         catch (error) {
@@ -71,7 +71,7 @@ export default {
                 try {
                     const token = localStorage.getItem('token');
                     const headers = token ? { Authorization: `Bearer ${token}` } : {};
-                    await axios.delete("http://localhost:8080/order/" + orderId + "/canceled", { headers });
+                    await axios.delete(`${process.env.VUE_APP_API_BASE_URL}/order/${orderId}/canceled`, { headers });
                     alert("Successfully canceled!");
                     const order = this.orderList.find(order => order.id === orderId);
                     order.orderStatus = "CANCELED";
