@@ -39,7 +39,7 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.price }}</td>
                     <td>{{ item.stockQuantity }}</td>
-                    <td><input v-model="item.quantity" type="number" style="width: 50px" /></td>
+                    <td><input v-model="item.quantity" type="number" min="1" style="width: 50px" /></td>
                 </tr>
             </tbody>
         </table>
