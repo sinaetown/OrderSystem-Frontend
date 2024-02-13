@@ -63,6 +63,8 @@ export default {
     methods: {
         async memberCreate() {
             try {
+                // json 인코딩 방식 => MemberCreate 참조
+                // multipart-formdata 방식 => ItemCreate 참조
                 const registerData = {
                     name: this.name, email: this.email, password: this.password,
                     city: this.city, street: this.street, zipcode: this.zipcode
