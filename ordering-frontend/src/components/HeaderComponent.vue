@@ -73,6 +73,7 @@ export default {
     },
     methods: {
         doLogout() {
+            // localStorage.removeItem("token");  
             localStorage.clear();
             window.location.reload();
         }

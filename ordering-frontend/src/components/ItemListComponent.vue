@@ -53,6 +53,8 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
+
 
 export default {
     props: ['isAdmin', 'pageTitle'],
@@ -77,14 +79,22 @@ export default {
         window.addEventListener('scroll', this.scrollPagination);
     },
     methods: {
+        ...mapActions(['addtoCart']),
         addCart() {
+            if (!confirm("장바구니에 담으시겠어요?")) return;
             const orderItems = Object.keys(this.selectedItems)
                 .filter(key => this.selectedItems[key] === true)
                 .map(key => {
                     const item = this.itemList.find(i => i.id == key);
+                    // 아래 코드는 장바구니 담는 순간 화면 단에서 재고수량 줄이기
+                    // item.stockQuantity -= item.quantity; 
                     return { itemId: item.id, name: item.name, count: item.quantity };
                 });
-            orderItems.forEach(item => this.$store.commit('addtoCart', item));
+            // 바로 아래 코드는 mutation 직접 호출 방식
+            // orderItems.forEach(item => this.$store.commit('addtoCart', item));
+
+            // 바로 아래 코드는 actions 호출 방식
+            orderItems.forEach(item => this.$store.dispatch('addtoCart', item));
             alert("장바구니에 담겼어요!");
         },
 
@@ -135,17 +145,29 @@ export default {
             this.currentPage = 0;
             this.isLastPage = false;
             this.loadItems();
+            this.selectedItems = [];
         },
         async placeOrder() {
             // {"1":true, "2": false, "3":true ..} 형식
             console.log(this, this.selectedItems);
             // Obejct.keys : 위 데이터 구조에서 1, 2 등 key 값만 추출하는 메서드
+
             const orderItems = Object.keys(this.selectedItems)
                 .filter(key => this.selectedItems[key] === true)
                 .map(key => {
                     const item = this.itemList.find(i => i.id == key);
                     return { itemId: item.id, count: item.quantity };
                 });
+            if (orderItems.length < 1) {
+                alert("선택된 상품이 없어요!");
+                return;
+            }
+
+            if (!confirm(`${orderItems.length}개의 상품을 주문하시겠어요?`)) {
+                alert("주문이 취소됐어요!");
+                return;
+            }
+
             const token = localStorage.getItem('token');
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
             try {
@@ -158,6 +180,8 @@ export default {
                 console.log(error);
                 alert("주문실패! :(");
             }
+
+
 
         },
         async deleteItem(itemId) {
